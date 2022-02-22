@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .outer-square {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            width: 200px;
+            height: 200px;
+
+            background-color: cadetblue;
+        }
+
+        .inner-square {
+            width: 100px;
+            height: 100px;
+
+            background-color: goldenrod;
+        }
+
+        .dragged {
+            position: absolute;
+        }
+
+        .spot {
+            position: absolute;
+
+            width: 3px;
+            height: 3px;
+            border-radius: 50%;
+
+            background-color: red;
+        }
+
+        .upload {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+
+            border: 3px lightskyblue dashed;
+            border-radius: 8px;
+            background-color: blanchedalmond;
+        }
+
+        .upload__control {
+            position: absolute;
+            top: -10000px;
+            left: -10000px;
+        }
+    </style>
+</head>
+<body>
+    <div class="spot"></div>
+    <a href="https://sky.pro" class="link dropdown">Я тренировочная ссылка</a>
+    <button class="button">Кнопка покраска</button>
+    <div class="upload"><input class="upload__control" type="file">Загрузить!</div>
+    <div class="outer-square">
+        <div class="inner-square">
+
+        </div>
+    </div>
+    <script>
+        const spot = document.querySelector('.spot');
+        const upload = document.querySelector('.upload');
+        const button = document.querySelector('.button');
+        const uploadControl = upload.querySelector('.upload__control');
+
+        const link = document.querySelector('.link');
+
+        function getCountClickHandler() {
+            let clicks = 0;
+            return function(event) {
+                const link = event.target;
+
+                clicks += 1;
+
+                console.log(clicks);
+
+                if (clicks < 5) {
+                    event.preventDefault();
+                }
+            }
+        }
+
+        link.onclick = getCountClickHandler();
+
+        // link.onclick = function(event) {
+        //     const link = event.target;
+
+        //     let clicks = link.dataset.clicks === undefined ?
+        //         0 : +link.dataset.clicks;
+
+        //     clicks += 1;
+
+        //     console.log(clicks);
+
+        //     if (clicks < 5) {
+        //         event.preventDefault();
+        //         link.dataset.clicks = clicks;
+        //     }
+        // }
+
+        function clickHandler(event) {
+            console.log(event);
+            const target = event.target;
+
+            target.style.color = 'red';
+        }
+
+        upload.onclick = clickHandler;
+        button.onclick = clickHandler;
+
+        document.body.onclick = (event) => {
+            const pageX = event.pageX;
+            const pageY = event.pageY;
+
+            spot.style.left = pageX + 'px';
+            spot.style.top = pageY + 'px';
+        }
+    </script>
+</body>
+</html>
