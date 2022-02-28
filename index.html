@@ -28,13 +28,13 @@
             position: absolute;
         }
 
-        .spot {
+        .spot-field__spot {
             position: absolute;
 
             width: 3px;
             height: 3px;
-            border-radius: 50%;
 
+            border-radius: 50%;
             background-color: red;
         }
 
@@ -42,6 +42,7 @@
             display: flex;
             justify-content: center;
             align-items: center;
+
             padding: 20px;
 
             border: 3px lightskyblue dashed;
@@ -57,72 +58,67 @@
     </style>
 </head>
 <body>
-    <div class="spot"></div>
-    <a href="https://sky.pro" class="link dropdown">Я тренировочная ссылка</a>
-    <button class="button">Кнопка покраска</button>
-    <div class="upload"><input class="upload__control" type="file">Загрузить!</div>
-    <div class="outer-square">
-        <div class="inner-square">
+    <main class="spot-field">
+        <div class="spot-field__spot"></div>
+        <a href="https://sky.pro" class="link dropdown">Я тренировочная ссылка</a>
+        <button class="button">Кнопка покраска</button>
+        <div class="upload"><input class="upload__control" type="file">Загрузить!</div>
+        <div class="outer-square">
+            <div class="inner-square">
 
+            </div>
         </div>
-    </div>
+
+    </main>
     <script>
-        const spot = document.querySelector('.spot');
-        const upload = document.querySelector('.upload');
-        const button = document.querySelector('.button');
-        const uploadControl = upload.querySelector('.upload__control');
+        const innerSquare = document.querySelector('.inner-square');
+        const outerSquare = document.querySelector('.outer-square');
 
-        const link = document.querySelector('.link');
+        outerSquare.onmouseover = function() {
+            console.log('outer-square mouseover');
+        }
 
-        function getCountClickHandler() {
-            let clicks = 0;
-            return function(event) {
-                const link = event.target;
+        outerSquare.onmouseout = function() {
+            console.log('outer-square mouseout');
+        }
 
-                clicks += 1;
+        outerSquare.onmouseenter = function() {
+            console.log('outer-square mouseenter');
+        }
 
-                console.log(clicks);
+        outerSquare.onmouseleave = function() {
+            console.log('outer-square mouseleave');
+        }
 
-                if (clicks < 5) {
-                    event.preventDefault();
-                }
+        outerSquare.onmousemove = function() {
+            console.log('WTF MOUSEMOVE???!?');
+        }
+
+        const spotField = document.querySelector('.spot-field');
+        const spot = spotField.querySelector('.spot-field__spot');
+
+        // spotField.onmousemove = function(event) {
+        //     spot.style.top = event.layerY + 'px';
+        //     spot.style.left = event.layerX + 'px';
+        // }
+
+        function innerSquareDragHandler(event) {
+            innerSquare.style.top = event.clientY - 20 + 'px';
+            innerSquare.style.left = event.clientX - 20 + 'px';
+        }
+
+        innerSquare.onmousedown = function(event) {
+            if (event.button === 0) {
+                innerSquare.classList.add('dragged');
+
+                spotField.onmousemove = innerSquareDragHandler;
             }
         }
 
-        link.onclick = getCountClickHandler();
-
-        // link.onclick = function(event) {
-        //     const link = event.target;
-
-        //     let clicks = link.dataset.clicks === undefined ?
-        //         0 : +link.dataset.clicks;
-
-        //     clicks += 1;
-
-        //     console.log(clicks);
-
-        //     if (clicks < 5) {
-        //         event.preventDefault();
-        //         link.dataset.clicks = clicks;
-        //     }
-        // }
-
-        function clickHandler(event) {
-            console.log(event);
-            const target = event.target;
-
-            target.style.color = 'red';
-        }
-
-        upload.onclick = clickHandler;
-        button.onclick = clickHandler;
-
-        document.body.onclick = (event) => {
-            const pageX = event.pageX;
-            const pageY = event.pageY;
-
-            spot.style.left = pageX + 'px';
-            spot.style.top = pageY + 'px';
+        innerSquare.onmouseup = function(event) {
+            if (event.button === 0) {
+                spotField.onmousemove = undefined;
+            }
         }
     </script>
 </body>

@@ -57,12 +57,13 @@
         </div>
     </div>
     <script>
-        window.addEventListener('scroll', (event) => {
-            const body = document.body;
-            const html = document.documentElement;
-            const vh = Math.max(document.documentElement.clientHeight || 0, window.innerHeight || 0);
+        const body = document.body;
+        const html = document.documentElement;
 
-            const documentHeight = Math.max(
+        window.addEventListener('scroll', function(event) {
+            console.log(event);
+
+            const docHeight = Math.max(
                 body.scrollHeight,
                 body.offsetHeight,
                 html.clientHeight,
@@ -70,33 +71,25 @@
                 html.offsetHeight,
             );
 
-            if (window.scrollY + vh + vh > documentHeight) {
-                document.body.style.height = documentHeight + 2 * vh + 'px';
+            const viewHeight = Math.max(document.documentElement.clientHeight || 0, window.innerHeight || 0);
+
+            if (docHeight - window.scrollY < 2 * viewHeight) {
+                body.style.height = docHeight + 2 * viewHeight + 'px';
             }
         });
 
-        document.addEventListener('DOMContentLoaded', () => {
-            const outerSquare = document.querySelector('.outer-square');
-            const innerSquare = document.querySelector('.inner-square');
+        const outerSquare = document.querySelector('.outer-square');
 
-            outerSquare.addEventListener('click', (event) => {
-                event.stopPropagation();
+        outerSquare.addEventListener('click', function(event) {
+            const target = event.target;
 
-                console.log(event.currentTarget);
-                console.log(event.target);
+            const currentTarget = event.currentTarget;
 
-                console.log(event.target.dataset.color);
+            if (target === currentTarget) {
+                return;
+            }
 
-                console.log('outer square click');
-            });
-
-            document.body.addEventListener('click', (event) => {
-                console.log('document body click');
-            });
-
-            document.documentElement.addEventListener('click', (event) => {
-                console.log('document html click');
-            }, true);
+            console.log(target.dataset.color);
         });
     </script>
 </body>

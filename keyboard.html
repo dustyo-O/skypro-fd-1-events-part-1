@@ -5,13 +5,81 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <style>
+        .field {
+            display: block;
+            margin-bottom: 8px;
+        }
+        .field__tip_hidden {
+            display: none;
+        }
+    </style>
 </head>
 <body>
+    <h2>Регистрация</h2>
     <form class="form">
-        <input class="input" type="text"/>
+        <label class="field">
+            Логин
+            <input class="field__input" type="text"/>
+            <span class="field__tip field__tip_hidden">Только английские буквы</span>
+        </label>
+        <input class="test-input" type="file">
         <button class="button">Кнопка</button>
     </form>
     <script>
+        const input = document.querySelector('.field__input');
+
+        const testInput = document.querySelector('.test-input');
+        testInput.oninput = function() {
+            console.log('input');
+        }
+
+        document.body.onkeydown = function() {
+            // console.log('keydown')
+        }
+
+        input.onkeypress = function(event) {
+            // console.log('keypress');
+            // console.log(input.value);
+            // if (event.keyCode < 48 || event.keyCode > 57) {
+            //     event.preventDefault();
+            // }
+        }
+
+        input.onkeyup = function(event) {
+            // console.log('keyup');
+            // console.log(input.value);
+        }
+
+        input.onfocus = function(event) {
+            const field = input.closest('.field');
+
+            const tip = field.querySelector('.field__tip');
+
+            tip.classList.remove('field__tip_hidden');
+        }
+
+        input.addEventListener('blur', function(event) {
+            console.log('blur');
+            const field = input.closest('.field');
+
+            const tip = field.querySelector('.field__tip');
+
+            tip.classList.add('field__tip_hidden');
+        });
+
+        input.addEventListener('change', function(event) {
+            console.log('change');
+        });
+
+        const form = document.querySelector('.form');
+
+        form.addEventListener('submit', function(event) {
+            if (!input.value) {
+                event.preventDefault();
+            }
+            console.log('submit');
+        });
     </script>
 </body>
 </html>
